@@ -1,2 +1,2 @@
 # LiViD
-Live Streaming Flutter App
+Live Streaming Flutter App developed by Jay Nakum
