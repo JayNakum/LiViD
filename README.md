@@ -1,4 +1,4 @@
-# livid
+# LiViD
 
 Developed by Jay Nakum.
 
