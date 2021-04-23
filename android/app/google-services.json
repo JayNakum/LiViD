@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "866071798273",
+    "project_id": "livid-jay",
+    "storage_bucket": "livid-jay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866071798273:android:11da7580cc7dd85b47d600",
+        "android_client_info": {
+          "package_name": "com.jaynakum.livid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866071798273-4q4108puiqjatnvl5d50faev1pf3fg1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp3QOX_2yojcILc97BkP6xVe2sDVWNHYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866071798273-4q4108puiqjatnvl5d50faev1pf3fg1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
