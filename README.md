@@ -1,6 +1,7 @@
 # LiViD
-
-Developed by Jay Nakum.
+### Developed by Jay Nakum.
+A live stream app developed in [flutter](https://flutter.dev/). 
+The streaming functionality is implemented through [agora](https://www.agora.io/) and the datebase and all is done using [firebase](https://firebase.google.com/).
 
 <!--
 ## Getting Started
