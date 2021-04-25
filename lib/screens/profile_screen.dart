@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:livid/screens/auth_screen.dart';
+// import 'package:livid/screens/auth_screen.dart';
 import 'package:livid/widgets/app/floating_buttons.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -47,10 +47,10 @@ class ProfileScreen extends StatelessWidget {
               onChanged: (itemIdentifier) {
                 if (itemIdentifier == 'Logout') {
                   FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    AuthScreen.routeName,
-                    ModalRoute.withName('/'),
-                  );
+                  // Navigator.of(context).pushNamedAndRemoveUntil(
+                  //   AuthScreen.routeName,
+                  //   ModalRoute.withName('/'),
+                  // );
                 }
               },
             ),
