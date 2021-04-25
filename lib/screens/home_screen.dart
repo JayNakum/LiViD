@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:livid/widgets/app/floating_buttons.dart';
 import 'package:livid/widgets/home/current_live_sessions.dart';
@@ -17,7 +18,11 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(child: CurrentLiveSessions()),
+        child: SingleChildScrollView(
+          child: FirebaseAuth.instance.currentUser == null
+              ? Center(child: Text('Login please'))
+              : CurrentLiveSessions(),
+        ),
         // SingleChildScrollView(
         //   child: Column(
         //     mainAxisAlignment: MainAxisAlignment.spaceAround,
