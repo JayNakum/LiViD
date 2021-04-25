@@ -11,12 +11,18 @@ import 'package:livid/models/settings.dart';
 class CallPage extends StatefulWidget {
   /// non-modifiable channel name of the page
   final String channelName;
+  final String streamTitle;
 
   /// non-modifiable client role of the page
   final ClientRole role;
 
   /// Creates a call page with given channel name.
-  const CallPage({Key key, this.channelName, this.role}) : super(key: key);
+  const CallPage({
+    Key key,
+    this.channelName,
+    this.role,
+    this.streamTitle,
+  }) : super(key: key);
 
   @override
   _CallPageState createState() => _CallPageState();
@@ -94,19 +100,19 @@ class _CallPageState extends State<CallPage> {
       });
     }, userJoined: (uid, elapsed) {
       setState(() {
-        final info = 'userJoined: $uid';
+        final info = 'userJoined';
         _infoStrings.add(info);
         _users.add(uid);
       });
     }, userOffline: (uid, elapsed) {
       setState(() {
-        final info = 'userOffline: $uid';
+        final info = 'userOffline';
         _infoStrings.add(info);
         _users.remove(uid);
       });
     }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
       setState(() {
-        final info = 'firstRemoteVideo: $uid ${width}x $height';
+        final info = 'firstRemoteVideo: ${width}x $height';
         _infoStrings.add(info);
       });
     }));
@@ -220,7 +226,7 @@ class _CallPageState extends State<CallPage> {
             elevation: 2.0,
             fillColor: Theme.of(context).primaryColor,
             padding: const EdgeInsets.all(12.0),
-          )
+          ),
         ],
       ),
     );
@@ -252,21 +258,26 @@ class _CallPageState extends State<CallPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.yellowAccent,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          _infoStrings[index],
-                          style: TextStyle(color: Colors.blueGrey),
+                      child:
+                          // Container(
+                          //   padding: const EdgeInsets.symmetric(
+                          //     vertical: 2,
+                          //     horizontal: 5,
+                          //   ),
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.yellowAccent,
+                          //     borderRadius: BorderRadius.circular(5),
+                          //   ),
+                          //   child:
+                          Text(
+                        _infoStrings[index],
+                        style: TextStyle(
+                          color: Colors.white,
+                          backgroundColor: Colors.black26,
                         ),
                       ),
-                    )
+                      // ),
+                    ),
                   ],
                 ),
               );
@@ -279,8 +290,10 @@ class _CallPageState extends State<CallPage> {
 
   void _onCallEnd(BuildContext context) {
     FirebaseFirestore.instance
-        .collection('streams')
+        .collection('users')
         .doc(widget.channelName)
+        .collection('session')
+        .doc(widget.streamTitle)
         .delete();
     Navigator.pop(context);
   }
@@ -298,6 +311,7 @@ class _CallPageState extends State<CallPage> {
 
   @override
   Widget build(BuildContext context) {
+    final _chatController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -313,6 +327,24 @@ class _CallPageState extends State<CallPage> {
             _viewRows(),
             _panel(),
             _toolbar(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                  right: 10.0,
+                  bottom: 8.0,
+                ),
+                child: TextField(
+                  controller: _chatController,
+                  // focusNode: ,
+                  decoration: InputDecoration(
+                    hintText: 'Chat',
+                    hintStyle: TextStyle(color: Theme.of(context).accentColor),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -40,6 +40,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .doc(authResult.user.uid)
             .set({'name': name, 'email': email});
       }
+      if (_auth.currentUser != null) {}
     } on PlatformException catch (err) {
       var message = 'An error occured, please check yout credentials :(';
       if (err.message != null) {

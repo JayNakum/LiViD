@@ -153,6 +153,7 @@ class IndexState extends State<IndexPage> {
         builder: (context) => CallPage(
           channelName: _userId,
           role: ClientRole.Broadcaster,
+          streamTitle: _streamTitle,
         ),
       ),
     );

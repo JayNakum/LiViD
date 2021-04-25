@@ -23,7 +23,7 @@ class CurrentLiveSessions extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           height: MediaQuery.of(context).size.height * 0.75,
           child: sessions.length == 0
-              ? Center(child: Text('No one is Live :('))
+              ? Center(child: Text('No one is Live'))
               : PageView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: sessions.length,
