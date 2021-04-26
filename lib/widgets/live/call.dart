@@ -4,6 +4,7 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:livid/widgets/profile/get_user_details.dart';
 import 'package:flutter/material.dart';
 
 import 'package:livid/models/settings.dart';
@@ -295,7 +296,30 @@ class _CallPageState extends State<CallPage> {
         .collection('session')
         .doc(widget.streamTitle)
         .delete();
+    _incrementData();
     Navigator.pop(context);
+  }
+
+  void _incrementData() async {
+    print(GetUserDetails(widget.channelName, 'lcoins'));
+    print(GetUserDetails.userData);
+    int lcoins = int.parse(GetUserDetails.userData);
+    lcoins += 1;
+    String newLcoins = lcoins.toString();
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.channelName)
+        .update({'lcoins': newLcoins});
+
+    print(GetUserDetails(widget.channelName, 'streams'));
+    print(GetUserDetails.userData);
+    int streamCount = int.parse(GetUserDetails.userData);
+    streamCount += 1;
+    String newStreamCount = streamCount.toString();
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.channelName)
+        .update({'streams': newStreamCount});
   }
 
   void _onToggleMute() {

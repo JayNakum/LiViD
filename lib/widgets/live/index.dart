@@ -4,7 +4,7 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:livid/widgets/pickers/user_image_picker.dart';
-import 'package:livid/widgets/app/call.dart';
+import 'package:livid/widgets/live/call.dart';
 
 class IndexPage extends StatefulWidget {
   final void Function(
@@ -62,82 +62,84 @@ class IndexState extends State<IndexPage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 20),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Title',
-                    filled: true,
-                    fillColor: Theme.of(context).primaryColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 20),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Title',
+                      filled: true,
+                      fillColor: Theme.of(context).primaryColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
                     ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please provide a title';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _streamTitle = value;
+                    },
                   ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please provide a title';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _streamTitle = value;
-                  },
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Description',
-                    filled: true,
-                    fillColor: Theme.of(context).primaryColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Description',
+                      filled: true,
+                      fillColor: Theme.of(context).primaryColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
                     ),
+                    onSaved: (value) {
+                      _streamDescription = value;
+                    },
                   ),
-                  onSaved: (value) {
-                    _streamDescription = value;
-                  },
-                ),
-                SizedBox(height: 20),
-                UserImagePicker(_pickedImage),
-                SizedBox(height: 20),
-                OutlinedButton(
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(2),
-                    backgroundColor: MaterialStateProperty.all(Colors.orange),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                  SizedBox(height: 20),
+                  UserImagePicker(_pickedImage),
+                  SizedBox(height: 20),
+                  OutlinedButton(
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(2),
+                      backgroundColor: MaterialStateProperty.all(Colors.orange),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
+                      ),
+                    ),
+                    onPressed: _trySubmit,
+                    child: Container(
+                      child: Text(
+                        'GO LIVE',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'Lequire',
+                        ),
                       ),
                     ),
                   ),
-                  onPressed: _trySubmit,
-                  child: Container(
-                    child: Text(
-                      'GO LIVE',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: 'Lequire',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.play_arrow_rounded,
-          //     color: Colors.black26,
-          //   ),
-          //   onPressed: onJoin,
-          // ),
-        ],
+            // IconButton(
+            //   icon: Icon(
+            //     Icons.play_arrow_rounded,
+            //     color: Colors.black26,
+            //   ),
+            //   onPressed: onJoin,
+            // ),
+          ],
+        ),
       ),
     );
   }

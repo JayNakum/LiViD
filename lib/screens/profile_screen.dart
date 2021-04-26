@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-// import 'package:livid/screens/auth_screen.dart';
 import 'package:livid/widgets/app/floating_buttons.dart';
+import 'package:livid/widgets/profile/user_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const routeName = '/profile-screen';
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,12 +48,45 @@ class ProfileScreen extends StatelessWidget {
               ],
               onChanged: (itemIdentifier) {
                 if (itemIdentifier == 'Logout') {
-                  FirebaseAuth.instance.signOut();
-                  SystemNavigator.pop();
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //   AuthScreen.routeName,
-                  //   ModalRoute.withName('/'),
-                  // );
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      titleTextStyle: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 20,
+                      ),
+                      backgroundColor: Colors.black54,
+                      contentTextStyle: TextStyle(color: Colors.white),
+                      elevation: 3,
+                      title: Text('Are you sure?'),
+                      content: Text('Do you want to logout?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text(
+                            'No',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text(
+                            'Yes',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                          onPressed: () {
+                            _auth.signOut();
+                            SystemNavigator.pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 }
               },
             ),
@@ -61,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: Center(
-        child: Text('Profile Screen'),
+        child: UserProfile(documentId: _auth.currentUser.uid),
       ),
       floatingActionButton: FloatingButtons(3),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

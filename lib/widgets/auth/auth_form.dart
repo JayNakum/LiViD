@@ -65,17 +65,44 @@ class _AuthFormState extends State<AuthForm> {
           SizedBox(height: 20),
           Form(
             key: _formKey,
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (!_isLogin)
+            child: SingleChildScrollView(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (!_isLogin)
+                    TextFormField(
+                      key: ValueKey('Name'),
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_emailFocusNode);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Name',
+                        filled: true,
+                        fillColor: Theme.of(context).primaryColor,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty || value.length < 3) {
+                          return 'Please enter atleast 3 characters';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _userName = value;
+                      },
+                    ),
+                  SizedBox(height: 20),
                   TextFormField(
-                    key: ValueKey('Name'),
+                    key: ValueKey('Email'),
+                    focusNode: _emailFocusNode,
                     onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_emailFocusNode);
+                      FocusScope.of(context).requestFocus(_passwordFocusNode);
                     },
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      hintText: 'Name',
+                      hintText: 'Email',
                       filled: true,
                       fillColor: Theme.of(context).primaryColor,
                       border: OutlineInputBorder(
@@ -83,118 +110,94 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                     ),
                     validator: (value) {
-                      if (value.isEmpty || value.length < 3) {
-                        return 'Please enter atleast 3 characters';
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Please enter a valid email address';
                       }
                       return null;
                     },
                     onSaved: (value) {
-                      _userName = value;
+                      _userEmail = value;
                     },
                   ),
-                SizedBox(height: 20),
-                TextFormField(
-                  key: ValueKey('Email'),
-                  focusNode: _emailFocusNode,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_passwordFocusNode);
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    filled: true,
-                    fillColor: Theme.of(context).primaryColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _userEmail = value;
-                  },
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  key: ValueKey('Password'),
-                  focusNode: _passwordFocusNode,
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    filled: true,
-                    fillColor: Theme.of(context).primaryColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 7) {
-                      // 7 is firebase default
-                      return 'Password must be atleast 7 characters long.';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _userPassword = value;
-                  },
-                ),
-                if (!widget._isLoading)
-                  TextButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                    child: Text(
-                      _isLogin
-                          ? 'New user? Sign up here!'
-                          : 'Already signed up? login here!',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ),
-                SizedBox(height: 20),
-                if (widget._isLoading) CircularProgressIndicator(),
-                if (!widget._isLoading)
-                  OutlinedButton(
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(2),
-                      backgroundColor: MaterialStateProperty.all(Colors.orange),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                        ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    key: ValueKey('Password'),
+                    focusNode: _passwordFocusNode,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      filled: true,
+                      fillColor: Theme.of(context).primaryColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
-                    onPressed: _trySubmit,
-                    // () {
-                    //   if (_isLogin) {
-                    //     Navigator.of(context)
-                    //         .pushReplacementNamed(HomeScreen.routeName);
-                    //     _isLogin = false;
-                    //   } else {
-                    //     setState(() {
-                    //       _isLogin = true;
-                    //     });
-                    //   }
-                    // },
-                    child: Container(
+                    validator: (value) {
+                      if (value.isEmpty || value.length < 7) {
+                        // 7 is firebase default
+                        return 'Password must be atleast 7 characters long.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _userPassword = value;
+                    },
+                  ),
+                  if (!widget._isLoading)
+                    TextButton(
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
                       child: Text(
-                        'JUMP IN',
-                        style: TextStyle(
-                          // color: Theme.of(context).primaryColor,
-                          fontSize: 24,
-                          fontFamily: 'Lequire',
+                        _isLogin
+                            ? 'New user? Sign up here!'
+                            : 'Already signed up? login here!',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ),
+                  SizedBox(height: 20),
+                  if (widget._isLoading) CircularProgressIndicator(),
+                  if (!widget._isLoading)
+                    OutlinedButton(
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(2),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.orange),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
+                        ),
+                      ),
+                      onPressed: _trySubmit,
+                      // () {
+                      //   if (_isLogin) {
+                      //     Navigator.of(context)
+                      //         .pushReplacementNamed(HomeScreen.routeName);
+                      //     _isLogin = false;
+                      //   } else {
+                      //     setState(() {
+                      //       _isLogin = true;
+                      //     });
+                      //   }
+                      // },
+                      child: Container(
+                        child: Text(
+                          'JUMP IN',
+                          style: TextStyle(
+                            // color: Theme.of(context).primaryColor,
+                            fontSize: 24,
+                            fontFamily: 'Lequire',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

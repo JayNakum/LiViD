@@ -52,6 +52,12 @@ class LiViD extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Lequire',
               ),
+              headline3: TextStyle(
+                fontSize: 28,
+                color: Colors.amber,
+                // fontWeight: FontWeight.bold,
+                fontFamily: 'Odin',
+              ),
               headline2: TextStyle(
                 fontFamily: 'Lequire',
                 fontSize: 24,

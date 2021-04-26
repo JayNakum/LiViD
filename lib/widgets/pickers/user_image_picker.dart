@@ -53,9 +53,12 @@ class _UserImagePickerState extends State<UserImagePicker> {
         ),
         TextButton.icon(
           onPressed: _pickImage,
-          icon: Icon(Icons.image_rounded),
+          icon: Icon(
+            Icons.image_rounded,
+            color: Colors.orangeAccent,
+          ),
           label: Text(
-            'Add Thumbnail',
+            'Add',
             style: TextStyle(
               color: Theme.of(context).primaryColor,
             ),

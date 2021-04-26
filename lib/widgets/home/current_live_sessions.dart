@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:livid/widgets/app/call.dart';
+import 'package:livid/widgets/live/call.dart';
 
 class CurrentLiveSessions extends StatelessWidget {
   // final isFollowing;

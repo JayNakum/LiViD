@@ -38,7 +38,14 @@ class _AuthScreenState extends State<AuthScreen> {
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user.uid)
-            .set({'name': name, 'email': email});
+            .set({
+          'name': name,
+          'email': email,
+          'lcoins': '0',
+          'streams': '0',
+          'photo':
+              'https://firebasestorage.googleapis.com/v0/b/livid-jay.appspot.com/o/App%20Logo.jpeg?alt=media&token=1d0269fe-7c1c-4c9a-89e7-26c56b04fbfc',
+        });
       }
       if (_auth.currentUser != null) {}
     } on PlatformException catch (err) {
@@ -56,7 +63,12 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = false;
       });
     } catch (err) {
-      print(err);
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(err.message),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
       setState(() {
         _isLoading = false;
       });
