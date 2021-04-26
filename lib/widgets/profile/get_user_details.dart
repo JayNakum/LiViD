@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class GetUserDetails extends StatelessWidget {
   final String documentId;
   final String field;
-  static String userData;
+  static var userData;
   GetUserDetails(this.documentId, this.field);
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,8 @@ class GetUserDetails extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
           GetUserDetails.userData = data[field];
-          print(GetUserDetails.userData);
           return Text(
-            "${data[field]}",
+            data[field].toString(),
             style: Theme.of(context).textTheme.headline3,
           );
         }

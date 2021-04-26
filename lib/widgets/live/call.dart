@@ -4,7 +4,7 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:livid/widgets/profile/get_user_details.dart';
+// import 'package:livid/widgets/profile/get_user_details.dart';
 import 'package:flutter/material.dart';
 
 import 'package:livid/models/settings.dart';
@@ -12,7 +12,6 @@ import 'package:livid/models/settings.dart';
 class CallPage extends StatefulWidget {
   /// non-modifiable channel name of the page
   final String channelName;
-  final String streamTitle;
 
   /// non-modifiable client role of the page
   final ClientRole role;
@@ -22,7 +21,6 @@ class CallPage extends StatefulWidget {
     Key key,
     this.channelName,
     this.role,
-    this.streamTitle,
   }) : super(key: key);
 
   @override
@@ -291,36 +289,41 @@ class _CallPageState extends State<CallPage> {
 
   void _onCallEnd(BuildContext context) {
     FirebaseFirestore.instance
-        .collection('users')
+        .collection('sessions')
         .doc(widget.channelName)
-        .collection('session')
-        .doc(widget.streamTitle)
         .delete();
-    _incrementData();
+    // _incrementData();
     Navigator.pop(context);
   }
 
-  void _incrementData() async {
-    print(GetUserDetails(widget.channelName, 'lcoins'));
-    print(GetUserDetails.userData);
-    int lcoins = int.parse(GetUserDetails.userData);
-    lcoins += 1;
-    String newLcoins = lcoins.toString();
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.channelName)
-        .update({'lcoins': newLcoins});
+  // void _incrementData() async {
+  //   // await FirebaseFirestore.instance
+  //   //     .collection(widget.channelName)
+  //   //     .doc('users')
+  //   //     .get()
+  //   //     .then((document) {
+  //   //   print(document.data());
+  //   // });
+  //   print(GetUserDetails(widget.channelName, 'lcoins'));
+  //   print(GetUserDetails.userData);
+  //   int lcoins = GetUserDetails.userData;
+  //   lcoins += 1;
+  //   String newLcoins = lcoins.toString();
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(widget.channelName)
+  //       .update({'lcoins': newLcoins});
 
-    print(GetUserDetails(widget.channelName, 'streams'));
-    print(GetUserDetails.userData);
-    int streamCount = int.parse(GetUserDetails.userData);
-    streamCount += 1;
-    String newStreamCount = streamCount.toString();
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.channelName)
-        .update({'streams': newStreamCount});
-  }
+  //   print(GetUserDetails(widget.channelName, 'streams'));
+  //   print(GetUserDetails.userData);
+  //   int streamCount = GetUserDetails.userData;
+  //   streamCount += 1;
+  //   String newStreamCount = streamCount.toString();
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(widget.channelName)
+  //       .update({'streams': newStreamCount});
+  // }
 
   void _onToggleMute() {
     setState(() {

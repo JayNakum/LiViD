@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:livid/models/cur_user.dart';
 import 'package:livid/widgets/pickers/user_image_picker.dart';
 
 class UserProfile extends StatefulWidget {
@@ -33,8 +34,8 @@ class _UserProfileState extends State<UserProfile> {
     await ref.putFile(_userImageFile).whenComplete(() => null);
     final url = await ref.getDownloadURL();
     users.doc(widget.documentId).update({'photo': url});
-    setState(() {});
     Navigator.of(context).pop();
+    setState(() {});
   }
 
   @override
@@ -44,6 +45,12 @@ class _UserProfileState extends State<UserProfile> {
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
+          CurUser(
+            name: data['name'],
+            streamCount: data['streams'],
+            lCoins: data['lcoins'],
+            photoUrl: data['photo'],
+          );
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -153,7 +160,7 @@ class _UserProfileState extends State<UserProfile> {
                             color: Theme.of(context).accentColor,
                           ),
                           title: Text(
-                            data['streams'],
+                            data['streams'].toString(),
                             style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
@@ -162,7 +169,7 @@ class _UserProfileState extends State<UserProfile> {
                       Center(
                         child: ListTile(
                           title: Text(
-                            data['lcoins'],
+                            data['lcoins'].toString(),
                             style: Theme.of(context).textTheme.headline3,
                           ),
                           leading: const Text(

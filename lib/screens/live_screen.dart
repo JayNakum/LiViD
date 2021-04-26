@@ -34,10 +34,8 @@ class _LiveScreenState extends State<LiveScreen> {
       await ref.putFile(thumbnail).whenComplete(() => null);
       final url = await ref.getDownloadURL();
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection('sessions')
           .doc(_auth.currentUser.uid)
-          .collection('session')
-          .doc(streamTitle)
           .set({
         'channelName': streamId,
         'title': streamTitle,

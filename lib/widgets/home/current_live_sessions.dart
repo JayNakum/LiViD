@@ -10,10 +10,7 @@ class CurrentLiveSessions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('streams')
-          .orderBy('title')
-          .snapshots(),
+      stream: FirebaseFirestore.instance.collection('sessions').snapshots(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
