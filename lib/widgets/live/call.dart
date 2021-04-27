@@ -100,8 +100,8 @@ class _CallPageState extends State<CallPage> {
       });
     }, userJoined: (uid, elapsed) {
       setState(() {
-        final info = 'userJoined';
-        _infoStrings.add(info);
+        // final info = 'userJoined';
+        // _infoStrings.add(info);
         _users.add(uid);
       });
     }, userOffline: (uid, elapsed) {
@@ -112,8 +112,8 @@ class _CallPageState extends State<CallPage> {
       });
     }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
       setState(() {
-        final info = 'firstRemoteVideo: ${width}x $height';
-        _infoStrings.add(info);
+        // final info = 'firstRemoteVideo: ${width}x $height';
+        // _infoStrings.add(info);
       });
     }));
   }
@@ -425,39 +425,40 @@ class _CallPageState extends State<CallPage> {
             _viewRows(),
             _panel(),
             _chatPanel(),
-            Container(
-              alignment: Alignment.bottomCenter,
-              padding: const EdgeInsets.only(
-                left: 10.0,
-                right: 10.0,
-                bottom: 8.0,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      style: Theme.of(context).textTheme.bodyText1,
-                      controller: _chatController,
-                      onChanged: (value) {
-                        _chatMessage = value;
-                      },
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Type a message...',
-                        hintStyle: Theme.of(context).textTheme.bodyText1,
+            if (widget.role == ClientRole.Audience)
+              Container(
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                  right: 10.0,
+                  bottom: 8.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        style: Theme.of(context).textTheme.bodyText1,
+                        controller: _chatController,
+                        onChanged: (value) {
+                          _chatMessage = value;
+                        },
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Type a message...',
+                          hintStyle: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.send_rounded,
-                      color: Colors.deepOrangeAccent,
+                    IconButton(
+                      icon: Icon(
+                        Icons.send_rounded,
+                        color: Colors.deepOrangeAccent,
+                      ),
+                      onPressed: _sendMessage,
                     ),
-                    onPressed: _sendMessage,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
             _toolbar(),
           ],
         ),
