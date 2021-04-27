@@ -17,7 +17,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     setState(() {
       _search = userName;
     });
-    print(_search);
+    // print(_search);
   }
 
   @override

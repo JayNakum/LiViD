@@ -32,6 +32,7 @@ class _CallPageState extends State<CallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   RtcEngine _engine;
+  var i = 1;
 
   @override
   void dispose() {
@@ -230,7 +231,58 @@ class _CallPageState extends State<CallPage> {
       ),
     );
   }
+
   // TODO: Show chat messages
+  Widget _chatPanel() {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('sessions')
+          .doc(widget.channelName)
+          .collection('chats')
+          .snapshots(),
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text('Loading...');
+        }
+        final chatDocs = snapshot.data.docs;
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 48),
+          alignment: Alignment.bottomCenter,
+          child: FractionallySizedBox(
+            heightFactor: 0.5,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 48),
+              child: ListView.builder(
+                itemCount: chatDocs.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 3,
+                      horizontal: 10,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            chatDocs[index].data()['message'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              backgroundColor: Colors.black26,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   /// Info panel to show logs
   Widget _panel() {
@@ -288,6 +340,14 @@ class _CallPageState extends State<CallPage> {
   }
 
   void _onCallEnd(BuildContext context) {
+    for (int x = 0; x < i; x++) {
+      FirebaseFirestore.instance
+          .collection('sessions')
+          .doc(widget.channelName)
+          .collection('chats')
+          .doc(x.toString())
+          .delete();
+    }
     FirebaseFirestore.instance
         .collection('sessions')
         .doc(widget.channelName)
@@ -338,7 +398,21 @@ class _CallPageState extends State<CallPage> {
 
   @override
   Widget build(BuildContext context) {
+    var _chatMessage = '';
     final _chatController = TextEditingController();
+    void _sendMessage() {
+      print(i);
+      FirebaseFirestore.instance
+          .collection('sessions')
+          .doc(widget.channelName)
+          .collection('chats')
+          .doc(i.toString())
+          .set({'message': _chatMessage});
+      i++;
+      FocusScope.of(context).unfocus();
+      _chatController.clear();
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -353,23 +427,42 @@ class _CallPageState extends State<CallPage> {
           children: <Widget>[
             _viewRows(),
             _panel(),
+            _chatPanel(),
             _toolbar(),
-            Align(
+            Container(
               alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 10.0,
-                  right: 10.0,
-                  bottom: 8.0,
-                ),
-                child: TextField(
-                  controller: _chatController,
-                  // focusNode: ,
-                  decoration: InputDecoration(
-                    hintText: 'Chat',
-                    hintStyle: TextStyle(color: Theme.of(context).accentColor),
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                right: 10.0,
+                bottom: 8.0,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: _chatController,
+                      onChanged: (value) {
+                        _chatMessage = value;
+                      },
+                      // onSubmitted: _sendMessage,
+                      // focusNode: ,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.amber,
+                        hintText: 'Type a message...',
+                        // hintStyle: TextStyle(color: Theme.of(context).accentColor),
+                      ),
+                    ),
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.send_rounded,
+                      color: Colors.deepOrangeAccent,
+                    ),
+                    onPressed: _sendMessage,
+                  ),
+                ],
               ),
             ),
           ],
