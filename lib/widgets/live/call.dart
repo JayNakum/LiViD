@@ -266,10 +266,7 @@ class _CallPageState extends State<CallPage> {
                         Flexible(
                           child: Text(
                             chatDocs[index].data()['message'],
-                            style: TextStyle(
-                              color: Colors.white,
-                              backgroundColor: Colors.black26,
-                            ),
+                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                         ),
                       ],
@@ -428,7 +425,6 @@ class _CallPageState extends State<CallPage> {
             _viewRows(),
             _panel(),
             _chatPanel(),
-            _toolbar(),
             Container(
               alignment: Alignment.bottomCenter,
               padding: const EdgeInsets.only(
@@ -440,18 +436,15 @@ class _CallPageState extends State<CallPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      style: Theme.of(context).textTheme.bodyText1,
                       controller: _chatController,
                       onChanged: (value) {
                         _chatMessage = value;
                       },
-                      // onSubmitted: _sendMessage,
-                      // focusNode: ,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        filled: true,
-                        fillColor: Colors.amber,
                         hintText: 'Type a message...',
-                        // hintStyle: TextStyle(color: Theme.of(context).accentColor),
+                        hintStyle: Theme.of(context).textTheme.bodyText1,
                       ),
                     ),
                   ),
@@ -465,6 +458,7 @@ class _CallPageState extends State<CallPage> {
                 ],
               ),
             ),
+            _toolbar(),
           ],
         ),
       ),
