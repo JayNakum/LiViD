@@ -23,19 +23,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  agora_rtc_engine: ^3.3.3
+  cloud_firestore: ^1.0.6
   cupertino_icons: ^1.0.2
   firebase_auth: ^1.1.1
   firebase_core: ^1.0.4
   firebase_storage: ^8.0.4
-  agora_rtc_engine: ^3.3.3
-  cloud_firestore: ^1.0.6
   image_picker: ^0.7.4
   permission_handler: ^7.0.0
-  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/splash_screen.png"
+  adaptive_icon_background: "#1A1A1A"
+  adaptive_icon_foreground: "assets/images/app_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
