@@ -39,28 +39,29 @@ class _RankState extends State<Rank> {
         final users = snapshot.data.docs;
 
         return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (ctx, i) {
-              return ListTile(
-                tileColor: Colors.black26,
-                leading: Container(
-                  height: 50,
-                  width: 50,
-                  child: Image.network(
-                    users[i].data()['photo'],
-                    fit: BoxFit.cover,
-                  ),
+          itemCount: users.length,
+          itemBuilder: (ctx, i) {
+            return ListTile(
+              tileColor: Colors.black26,
+              leading: Container(
+                height: 50,
+                width: 50,
+                child: Image.network(
+                  users[i].data()['photo'],
+                  fit: BoxFit.cover,
                 ),
-                title: Text(
-                  users[i].data()['name'],
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                trailing: Text(
-                  users[i].data()['streams'].toString(),
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              );
-            });
+              ),
+              title: Text(
+                users[i].data()['name'],
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              trailing: Text(
+                users[i].data()['streams'].toString(),
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            );
+          },
+        );
       },
     );
   }
