@@ -23,16 +23,6 @@ class HomeScreen extends StatelessWidget {
               ? Center(child: Text('Login please'))
               : CurrentLiveSessions(),
         ),
-        // SingleChildScrollView(
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //     children: <Widget>[
-        //       CurrentLiveSessions(),
-        //       SizedBox(height: 30),
-        //       CurrentLiveSessions(),
-        //     ],
-        //   ),
-        // ),
       ),
       floatingActionButton: FloatingButtons(0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
